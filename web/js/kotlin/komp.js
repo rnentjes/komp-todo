@@ -43,9 +43,16 @@ var komp = function (_, Kotlin, $module$kotlinx_html_js) {
   Komp.prototype.define_eho435$ = function (element, component) {
     this.elements_0.put_xwzc9p$(element, component);
   };
-  Komp.prototype.create_eho435$ = function (parent, component) {
+  Komp.prototype.create_og2ns8$ = function (parent, component, insertAsFirst) {
+    if (insertAsFirst === void 0)
+      insertAsFirst = false;
     var element = component.create();
-    parent.appendChild(element);
+    if (insertAsFirst && parent.childElementCount > 0) {
+      parent.insertBefore(element, parent.firstChild);
+    }
+     else {
+      parent.appendChild(element);
+    }
     this.elements_0.put_xwzc9p$(element, component);
   };
   Komp.prototype.remove_lt8gi4$ = function (element) {
