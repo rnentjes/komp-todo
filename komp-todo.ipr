@@ -30,6 +30,9 @@
     </profile>
     <version value="1.0" />
   </component>
+  <component name="KotlinCommonCompilerArguments">
+    <option name="coroutinesWarn" value="false" />
+  </component>
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/komp-todo.iml" filepath="$PROJECT_DIR$/.idea/modules/komp-todo.iml" />
@@ -55,6 +58,7 @@
     <library name="Gradle: nl.astraeus:komp:0.0.1-SNAPSHOT">
       <CLASSES>
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/nl.astraeus/komp/0.0.1-SNAPSHOT/f06cec1a883be748ea389ccccd70e2722bf1d265/komp-0.0.1-SNAPSHOT.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/nl.astraeus/komp/0.0.1-SNAPSHOT/fe1a874742fc82c99c0a067c7189e0cc85c6b025/komp-0.0.1-SNAPSHOT.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
