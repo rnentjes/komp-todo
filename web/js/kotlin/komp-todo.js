@@ -14,7 +14,7 @@ this['komp-todo'] = function (_, Kotlin, $module$komp, $module$kotlinx_html_js) 
   var HtmlComponent = $module$komp.nl.astraeus.komp.HtmlComponent;
   var h1 = $module$kotlinx_html_js.kotlinx.html.h1_vmej1w$;
   var set_id = $module$kotlinx_html_js.kotlinx.html.set_id_ueiko3$;
-  var set_onKeyDownFunction = $module$kotlinx_html_js.kotlinx.html.js.set_onKeyDownFunction_pszlq2$;
+  var set_onKeyPressFunction = $module$kotlinx_html_js.kotlinx.html.js.set_onKeyPressFunction_pszlq2$;
   var input = $module$kotlinx_html_js.kotlinx.html.input_e1g74z$;
   var header = $module$kotlinx_html_js.kotlinx.html.header_8btlf7$;
   var InputType = $module$kotlinx_html_js.kotlinx.html.InputType;
@@ -190,7 +190,7 @@ this['komp-todo'] = function (_, Kotlin, $module$komp, $module$kotlinx_html_js) 
       set_id($receiver, 'todo_input');
       $receiver.placeholder = 'What needs to be done?';
       $receiver.autoFocus = true;
-      set_onKeyDownFunction($receiver, TodoApp$render$lambda$lambda$lambda$lambda(this$TodoApp));
+      set_onKeyPressFunction($receiver, TodoApp$render$lambda$lambda$lambda$lambda(this$TodoApp));
     };
   }
   function TodoApp$render$lambda$lambda(this$TodoApp) {
@@ -216,7 +216,7 @@ this['komp-todo'] = function (_, Kotlin, $module$komp, $module$kotlinx_html_js) 
   function TodoApp$render$lambda$lambda$lambda$lambda$lambda(closure$todo, this$TodoApp) {
     return function ($receiver) {
       $receiver.value = closure$todo.title;
-      set_onKeyDownFunction($receiver, TodoApp$render$lambda$lambda$lambda$lambda$lambda$lambda(closure$todo, this$TodoApp));
+      set_onKeyPressFunction($receiver, TodoApp$render$lambda$lambda$lambda$lambda$lambda$lambda(closure$todo, this$TodoApp));
     };
   }
   function TodoApp$render$lambda$lambda$lambda$lambda$lambda$lambda$lambda(closure$todo, this$TodoApp) {

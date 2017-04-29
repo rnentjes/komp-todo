@@ -1,10 +1,7 @@
 package nl.astraeus.komp.todo
 
 import kotlinx.html.*
-import kotlinx.html.js.onClickFunction
-import kotlinx.html.js.onDoubleClickFunction
-import kotlinx.html.js.onKeyDownFunction
-import kotlinx.html.js.section
+import kotlinx.html.js.*
 import nl.astraeus.komp.HtmlComponent
 import nl.astraeus.komp.Komp
 import org.w3c.dom.HTMLElement
@@ -120,13 +117,14 @@ class TodoApp: HtmlComponent() {
                 id = "todo_input"
                 placeholder = "What needs to be done?"
                 autoFocus = true
-                onKeyDownFunction = { e ->
+                onKeyPressFunction = { e ->
                     if (e is KeyboardEvent && e.keyCode == 13) {
                         addTodo(e)
                     }
                 }
             }
         }
+
         section(classes = "main") {
             input(classes = "toggle-all") {
                 type = InputType.checkBox
@@ -145,7 +143,7 @@ class TodoApp: HtmlComponent() {
                                 classes += "editing"
                                 input(classes = "edit") {
                                     value = todo.title
-                                    onKeyDownFunction = { e ->
+                                    onKeyPressFunction = { e ->
                                         if (e is KeyboardEvent && e.keyCode == 13) {
                                             editTodo(e, todo)
                                         }
@@ -183,6 +181,7 @@ class TodoApp: HtmlComponent() {
                 }
             }
         }
+
         footer(classes = "footer") {
             span(classes = "todo-count") {
                 strong { + "${getItemsLeft()}" }
