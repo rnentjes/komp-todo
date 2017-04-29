@@ -1,10 +1,12 @@
 package nl.astraeus.komp.todo
 
 import kotlinx.html.*
+import kotlinx.html.js.onKeyPressFunction
 import kotlinx.html.js.section
 import nl.astraeus.komp.HtmlComponent
 import nl.astraeus.komp.Komp
 import org.w3c.dom.HTMLElement
+import org.w3c.dom.events.KeyboardEvent
 import kotlin.browser.document
 
 /**
@@ -18,12 +20,21 @@ class Todo(val dataId: String, val title: String, var completed: Boolean)
 class TodoApp: HtmlComponent() {
     val todos: List<Todo> = ArrayList()
 
+    fun addTodo(todo: String) {
+
+    }
+
     override fun render(consumer: TagConsumer<HTMLElement>) = consumer.section(classes = "todoapp") {
         header(classes = "header") {
             h1 { + "todos" }
             input(classes = "new-todo") {
                 placeholder = "What needs to be done?"
                 autoFocus = true
+                onKeyPressFunction = { e ->
+                    if (e is KeyboardEvent && e.keyCode == 13) {
+                        //addTodo(e.target.value)
+                    }
+                }
             }
         }
         section(classes = "main") {
