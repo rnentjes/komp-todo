@@ -11,7 +11,7 @@ this['komp-todo'] = function (_, Kotlin, $module$komp, $module$kotlinx_html_js) 
   'use strict';
   var Enum = Kotlin.kotlin.Enum;
   var ArrayList_init = Kotlin.kotlin.collections.ArrayList_init_mqih57$;
-  var HtmlComponent = $module$komp.nl.astraeus.komp.HtmlComponent;
+  var Komponent = $module$komp.nl.astraeus.komp.Komponent;
   var h1 = $module$kotlinx_html_js.kotlinx.html.h1_vmej1w$;
   var set_id = $module$kotlinx_html_js.kotlinx.html.set_id_ueiko3$;
   var set_onKeyPressFunction = $module$kotlinx_html_js.kotlinx.html.js.set_onKeyPressFunction_pszlq2$;
@@ -35,10 +35,9 @@ this['komp-todo'] = function (_, Kotlin, $module$komp, $module$kotlinx_html_js) 
   var footer = $module$kotlinx_html_js.kotlinx.html.footer_780ap1$;
   var section_0 = $module$kotlinx_html_js.kotlinx.html.js.section_ceckl$;
   var ArrayList_init_0 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$;
-  var komp_0 = $module$komp.nl.astraeus.komp;
   Selection.prototype = Object.create(Enum.prototype);
   Selection.prototype.constructor = Selection;
-  TodoApp.prototype = Object.create(HtmlComponent.prototype);
+  TodoApp.prototype = Object.create(Komponent.prototype);
   TodoApp.prototype.constructor = TodoApp;
   function Todo(dataId, title, completed, editing) {
     if (completed === void 0)
@@ -105,7 +104,7 @@ this['komp-todo'] = function (_, Kotlin, $module$komp, $module$kotlinx_html_js) 
   }
   Selection.valueOf_61zpoe$ = Selection$valueOf;
   function TodoApp() {
-    HtmlComponent.call(this);
+    Komponent.call(this);
     this.todoList = ArrayList_init_0();
     this.selected = Selection$ALL_getInstance();
   }
@@ -169,7 +168,7 @@ this['komp-todo'] = function (_, Kotlin, $module$komp, $module$kotlinx_html_js) 
     this.refresh();
   };
   TodoApp.prototype.refresh = function () {
-    HtmlComponent.prototype.refresh.call(this);
+    Komponent.prototype.refresh.call(this);
     var inputBox = document.getElementById('todo_input');
     if (Kotlin.isType(inputBox, HTMLInputElement)) {
       inputBox.focus();
@@ -367,11 +366,11 @@ this['komp-todo'] = function (_, Kotlin, $module$komp, $module$kotlinx_html_js) 
   TodoApp.$metadata$ = {
     kind: Kotlin.Kind.CLASS,
     simpleName: 'TodoApp',
-    interfaces: [HtmlComponent]
+    interfaces: [Komponent]
   };
   function main(args) {
     var tmp$;
-    komp_0.Komp.create_og2ns8$((tmp$ = document.body) != null ? tmp$ : Kotlin.throwNPE(), new TodoApp(), true);
+    Komponent.Companion.create_nkol39$((tmp$ = document.body) != null ? tmp$ : Kotlin.throwNPE(), new TodoApp(), true);
   }
   var package$nl = _.nl || (_.nl = {});
   var package$astraeus = package$nl.astraeus || (package$nl.astraeus = {});
@@ -390,9 +389,9 @@ this['komp-todo'] = function (_, Kotlin, $module$komp, $module$kotlinx_html_js) 
   package$todo.Selection = Selection;
   package$todo.TodoApp = TodoApp;
   package$todo.main_kand9s$ = main;
-  Kotlin.defineModule('komp-todo', _);
   main([]);
+  Kotlin.defineModule('komp-todo', _);
   return _;
 }(typeof this['komp-todo'] === 'undefined' ? {} : this['komp-todo'], kotlin, komp, this['kotlinx-html-js']);
 
-//@ sourceMappingURL=komp-todo.js.map
+//# sourceMappingURL=komp-todo.js.map

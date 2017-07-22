@@ -2,7 +2,7 @@ group 'nl.astraeus'
 version '0.0.1-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.1.1'
+    ext.kotlin_version = '1.1.4-eap-11'
 
     repositories {
         maven {
@@ -19,7 +19,14 @@ buildscript {
 
 }
 
+allprojects {
+    ext {
+        kotlin_version = '1.1.4-eap-11'
+    }
+}
+
 apply plugin: 'kotlin2js'
+apply plugin: 'kotlin-dce-js'
 
 repositories {
     maven {
@@ -30,7 +37,7 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
-    compile "nl.astraeus:komp:0.0.1-SNAPSHOT"
+    compile "nl.astraeus:komp:0.0.4-SNAPSHOT"
 }
 
 compileKotlin2Js {
@@ -42,6 +49,7 @@ compileKotlin2Js {
     compileKotlin2Js.kotlinOptions.verbose = true
 }
 
+/*
 compileKotlin2Js.doLast {
     configurations.compile.each { File file ->
         copy {
@@ -56,3 +64,4 @@ compileKotlin2Js.doLast {
         }
     }
 }
+*/

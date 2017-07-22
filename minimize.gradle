@@ -1,0 +1,32 @@
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath "com.eriwen:gradle-js-plugin:1.12.1"
+  }
+}
+
+plugins {
+  id "com.eriwen.gradle.js" version "2.14.1"
+}
+
+// Create new CombineJsTasks if you have multiple sets of JS files
+task combineKotlinJs(type: com.eriwen.gradle.js.tasks.CombineJsTask) {
+  source = [
+          "${projectDir}/web/js/kotlin/min/kotlin.js",
+          "${projectDir}/web/js/kotlin/min/kotlinx-html-js.js",
+          "${projectDir}/web/js/kotlin/min/komp.js",
+          "${projectDir}/web/js/kotlin/min/komp-todo.js"
+  ]
+  dest = file("${projectDir}/web/js/generated/todo.all.js")
+}
+
+minifyJs {
+  source = combineKotlinJs
+  dest = file("${projectDir}/web/js/generated/todo.all.min.js")
+  closure {
+    warningLevel = 'QUIET'
+    compilerOptions.languageIn = "ECMASCRIPT5"
+  }
+}

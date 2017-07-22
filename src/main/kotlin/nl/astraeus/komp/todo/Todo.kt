@@ -2,8 +2,7 @@ package nl.astraeus.komp.todo
 
 import kotlinx.html.*
 import kotlinx.html.js.*
-import nl.astraeus.komp.HtmlComponent
-import nl.astraeus.komp.Komp
+import nl.astraeus.komp.Komponent
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.events.Event
@@ -28,7 +27,7 @@ enum class Selection(val title: String) {
     COMPLETED("Completed")
 }
 
-class TodoApp: HtmlComponent() {
+class TodoApp: Komponent() {
     val todoList: MutableList<Todo> = ArrayList()
     var selected: Selection = Selection.ALL
 
@@ -212,5 +211,5 @@ class TodoApp: HtmlComponent() {
 }
 
 fun main(args: Array<String>) {
-    Komp.create(document.body!!, TodoApp(), true)
+    Komponent.create(document.body!!, TodoApp(), true)
 }
