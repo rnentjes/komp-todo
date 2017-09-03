@@ -4,6 +4,8 @@ Runing example: [komp-todo](http://todo.astraeus.nl/)
 
 Compare it with other js frameworks: [https://github.com/tastejs/todomvc/](https://github.com/tastejs/todomvc/)
 
+You can also find an example of a complete application here: [simple-password-manager](https://github.com/rnentjes/simple-password-manager)
+
 Dependencies:
 
 * [kotlinx-html-js](https://github.com/Kotlin/kotlinx.html)
