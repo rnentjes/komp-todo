@@ -2,7 +2,7 @@ group 'nl.astraeus'
 version '0.0.1-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.1.4-eap-11'
+    ext.kotlin_version = '1.1.4'
 
     repositories {
         maven {
@@ -21,7 +21,7 @@ buildscript {
 
 allprojects {
     ext {
-        kotlin_version = '1.1.4-eap-11'
+        kotlin_version = '1.1.4'
     }
 }
 
@@ -37,7 +37,7 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
-    compile "nl.astraeus:komp:0.0.4-SNAPSHOT"
+    compile "nl.astraeus:komp:0.0.5-SNAPSHOT"
 }
 
 compileKotlin2Js {

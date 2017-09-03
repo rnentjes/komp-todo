@@ -7,6 +7,7 @@
         <compilerArguments>
           <option name="outputFile" value="$MODULE_DIR$/../../build/classes/test/komp-todo_test.js" />
           <option name="noStdlib" value="true" />
+          <option name="sourceMapEmbedSources" value="inlining" />
           <option name="metaInfo" value="true" />
           <option name="target" value="v5" />
           <option name="main" value="call" />
@@ -17,11 +18,6 @@
           </option>
           <option name="pluginClasspaths">
             <array />
-          </option>
-          <option name="freeArgs">
-            <list>
-              <option value="inlining" />
-            </list>
           </option>
           <option name="coroutinesWarn" value="true" />
         </compilerArguments>
@@ -39,8 +35,8 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="komp-todo_main" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-js:1.1.4-eap-11" level="project" />
-    <orderEntry type="library" name="Gradle: nl.astraeus:komp:0.0.4-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-js:1.1.4" level="project" />
+    <orderEntry type="library" name="Gradle: nl.astraeus:komp:0.0.5-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-html-js:0.6.2" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-html-common:0.6.2" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.1.0" level="project" />
