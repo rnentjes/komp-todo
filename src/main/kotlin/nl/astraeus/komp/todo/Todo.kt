@@ -1,8 +1,10 @@
 package nl.astraeus.komp.todo
 
 import kotlinx.html.*
+import kotlinx.html.dom.create
 import kotlinx.html.js.*
 import nl.astraeus.komp.Komponent
+import nl.astraeus.komp.DomDiffer
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.events.Event
@@ -212,4 +214,38 @@ class TodoApp: Komponent() {
 
 fun main(args: Array<String>) {
     Komponent.create(document.body!!, TodoApp(), true)
+
+    val el1 = document.create.div {
+        div {
+            div {
+                id = "id1"
+                span {
+                    +"Test"
+                }
+            }
+        }
+    }
+
+    val el2 = document.create.div {
+        div {
+            id = "id1"
+            span {
+                +"Test"
+            }
+            input {
+                name = "bla"
+            }
+        }
+    }
+
+    // println("equals ${DomDiffer.match(el1, el2)}")
+
+    console.log("OLD", el1)
+    console.log("NEW", el2)
+
+    DomDiffer.replaceDiff(el2, el1)
+
+    console.log("OLD", el1)
+    console.log("NEW", el2)
 }
+

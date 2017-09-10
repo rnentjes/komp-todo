@@ -35,6 +35,9 @@ this['komp-todo'] = function (_, Kotlin, $module$komp, $module$kotlinx_html_js) 
   var footer = $module$kotlinx_html_js.kotlinx.html.footer_780ap1$;
   var section_0 = $module$kotlinx_html_js.kotlinx.html.js.section_ceckl$;
   var ArrayList_init_0 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$;
+  var get_create = $module$kotlinx_html_js.kotlinx.html.dom.get_create_4wc2mh$;
+  var div_0 = $module$kotlinx_html_js.kotlinx.html.js.div_wkomt5$;
+  var komp = $module$komp.nl.astraeus.komp;
   Selection.prototype = Object.create(Enum.prototype);
   Selection.prototype.constructor = Selection;
   TodoApp.prototype = Object.create(Komponent.prototype);
@@ -368,9 +371,43 @@ this['komp-todo'] = function (_, Kotlin, $module$komp, $module$kotlinx_html_js) 
     simpleName: 'TodoApp',
     interfaces: [Komponent]
   };
+  function main$lambda$lambda$lambda$lambda($receiver) {
+    $receiver.unaryPlus_pdl1vz$('Test');
+  }
+  function main$lambda$lambda$lambda($receiver) {
+    set_id($receiver, 'id1');
+    span($receiver, void 0, main$lambda$lambda$lambda$lambda);
+  }
+  function main$lambda$lambda($receiver) {
+    div($receiver, void 0, main$lambda$lambda$lambda);
+  }
+  function main$lambda($receiver) {
+    div($receiver, void 0, main$lambda$lambda);
+  }
+  function main$lambda$lambda$lambda_0($receiver) {
+    $receiver.unaryPlus_pdl1vz$('Test');
+  }
+  function main$lambda$lambda$lambda_1($receiver) {
+    $receiver.name = 'bla';
+  }
+  function main$lambda$lambda_0($receiver) {
+    set_id($receiver, 'id1');
+    span($receiver, void 0, main$lambda$lambda$lambda_0);
+    input($receiver, void 0, void 0, void 0, void 0, void 0, main$lambda$lambda$lambda_1);
+  }
+  function main$lambda_0($receiver) {
+    div($receiver, void 0, main$lambda$lambda_0);
+  }
   function main(args) {
     var tmp$;
     Komponent.Companion.create_nkol39$((tmp$ = document.body) != null ? tmp$ : Kotlin.throwNPE(), new TodoApp(), true);
+    var el1 = div_0(get_create(document), void 0, main$lambda);
+    var el2 = div_0(get_create(document), void 0, main$lambda_0);
+    console.log('OLD', el1);
+    console.log('NEW', el2);
+    komp.DomDiffer.replaceDiff_aifv3w$(el2, el1);
+    console.log('OLD', el1);
+    console.log('NEW', el2);
   }
   var package$nl = _.nl || (_.nl = {});
   var package$astraeus = package$nl.astraeus || (package$nl.astraeus = {});
