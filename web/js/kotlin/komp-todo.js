@@ -184,6 +184,11 @@ this['komp-todo'] = function (_, Kotlin, $module$komp, $module$kotlinx_html_js) 
     return function (e) {
       if (Kotlin.isType(e, KeyboardEvent) && e.keyCode === 13) {
         this$TodoApp.addTodo_9ojx7i$(e);
+        var target = e.target;
+        if (Kotlin.isType(target, HTMLInputElement)) {
+          target.value = '';
+          target.defaultValue = '';
+        }
       }
     };
   }
@@ -405,7 +410,7 @@ this['komp-todo'] = function (_, Kotlin, $module$komp, $module$kotlinx_html_js) 
     var el2 = div_0(get_create(document), void 0, main$lambda_0);
     console.log('OLD', el1);
     console.log('NEW', el2);
-    komp.DomDiffer.replaceDiff_aifv3w$(el2, el1);
+    komp.DomDiffer.replaceDiff_26ucz2$(el2, el1);
     console.log('OLD', el1);
     console.log('NEW', el2);
   }

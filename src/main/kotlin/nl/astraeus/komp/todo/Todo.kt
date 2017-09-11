@@ -121,6 +121,13 @@ class TodoApp: Komponent() {
                 onKeyPressFunction = { e ->
                     if (e is KeyboardEvent && e.keyCode == 13) {
                         addTodo(e)
+
+                        val target = e.target
+
+                        if (target is HTMLInputElement) {
+                            target.value = ""
+                            target.defaultValue = ""
+                        }
                     }
                 }
             }
