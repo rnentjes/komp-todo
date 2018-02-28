@@ -1,10 +1,30 @@
 package nl.astraeus.komp.todo
 
-import kotlinx.html.*
+import kotlinx.html.InputType
+import kotlinx.html.TagConsumer
+import kotlinx.html.a
+import kotlinx.html.button
+import kotlinx.html.classes
+import kotlinx.html.div
 import kotlinx.html.dom.create
-import kotlinx.html.js.*
-import nl.astraeus.komp.Komponent
+import kotlinx.html.footer
+import kotlinx.html.h1
+import kotlinx.html.header
+import kotlinx.html.id
+import kotlinx.html.input
+import kotlinx.html.js.div
+import kotlinx.html.js.onClickFunction
+import kotlinx.html.js.onDoubleClickFunction
+import kotlinx.html.js.onKeyPressFunction
+import kotlinx.html.js.section
+import kotlinx.html.label
+import kotlinx.html.li
+import kotlinx.html.section
+import kotlinx.html.span
+import kotlinx.html.strong
+import kotlinx.html.ul
 import nl.astraeus.komp.DomDiffer
+import nl.astraeus.komp.Komponent
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.events.Event
@@ -17,242 +37,244 @@ import kotlin.js.Date
  */
 
 class Todo(
-  val dataId: String,
-  var title: String,
-  var completed: Boolean = false,
-  var editing: Boolean = false
+    val dataId: String,
+    var title: String,
+    var completed: Boolean = false,
+    var editing: Boolean = false
 )
 
 enum class Selection(val title: String) {
-    ALL("All"),
-    ACTIVE("Active"),
-    COMPLETED("Completed")
+  ALL("All"),
+  ACTIVE("Active"),
+  COMPLETED("Completed")
 }
 
-class TodoApp: Komponent() {
-    val todoList: MutableList<Todo> = ArrayList()
-    var selected: Selection = Selection.ALL
+class TodoApp : Komponent() {
+  val todoList: MutableList<Todo> = ArrayList()
+  var selected: Selection = Selection.ALL
 
-    fun addTodo(e: Event) {
-        val target = e.target
+  fun addTodo(e: Event) {
+    val target = e.target
 
-        if (target is HTMLInputElement) {
-            todoList.add(Todo("${Date().getTime()}", target.value))
+    if (target is HTMLInputElement) {
+      todoList.add(Todo("${Date().getTime()}", target.value))
 
-            refresh()
-        }
+      refresh()
+    }
+  }
+
+  fun editTodo(e: Event, todo: Todo) {
+    val target = e.target
+
+    if (target is HTMLInputElement) {
+      todo.title = target.value
+      todo.editing = false
+
+      refresh()
     }
 
-    fun editTodo(e: Event, todo: Todo) {
-        val target = e.target
+  }
 
-        if (target is HTMLInputElement) {
-            todo.title = target.value
-            todo.editing = false
+  fun destroyTodo(todo: Todo) {
+    todoList.remove(todo)
 
-            refresh()
-        }
+    refresh()
+  }
 
-    }
+  fun selectSelection(selection: Selection) {
+    selected = selection
 
-    fun destroyTodo(todo: Todo) {
+    refresh()
+  }
+
+  fun clearCompleted() {
+    for (todo in ArrayList(todoList)) {
+      if (todo.completed) {
         todoList.remove(todo)
-
-        refresh()
+      }
     }
 
-    fun selectSelection(selection: Selection) {
-        selected = selection
+    refresh()
+  }
 
-        refresh()
+  fun todoClicked(todo: Todo) {
+    todo.completed = !todo.completed
+
+    refresh()
+  }
+
+  fun getItemsLeft(): Int {
+    var result = 0
+    for (todo in todoList) {
+      if (!todo.completed) {
+        result++
+      }
+    }
+    return result
+  }
+
+  fun setEditing(editTodo: Todo) {
+    for (todo in todoList) {
+      todo.editing = todo == editTodo
     }
 
-    fun clearCompleted() {
-        for (todo in ArrayList(todoList)) {
-            if (todo.completed) {
-                todoList.remove(todo)
+    refresh()
+  }
+
+  override fun refresh() {
+    super.refresh()
+
+    val inputBox = document.getElementById("todo_input")
+
+    if (inputBox is HTMLInputElement) {
+      inputBox.focus()
+    }
+  }
+
+  override fun render(consumer: TagConsumer<HTMLElement>) = consumer.section(classes = "todoapp") {
+    header(classes = "header") {
+      h1 { +"todos" }
+      input(classes = "new-todo") {
+        id = "todo_input"
+        placeholder = "What needs to be done?"
+        autoFocus = true
+        onKeyPressFunction = { e ->
+          if (e is KeyboardEvent && e.keyCode == 13) {
+            addTodo(e)
+
+            val target = e.target
+
+            if (target is HTMLInputElement) {
+              target.value = ""
+              target.defaultValue = ""
             }
+          }
         }
-
-        refresh()
+      }
     }
 
-    fun todoClicked(todo: Todo) {
-        todo.completed = !todo.completed
-
-        refresh()
-    }
-
-    fun getItemsLeft(): Int {
-        var result = 0
+    section(classes = "main") {
+      input(classes = "toggle-all") {
+        type = InputType.checkBox
+      }
+      label {
+        for_ = "toggle-all"
+        +"Mark all as complete"
+      }
+      ul(classes = "todo-list") {
         for (todo in todoList) {
-            if (!todo.completed) {
-                result++
-            }
-        }
-        return result
-    }
-
-    fun setEditing(editTodo: Todo) {
-        for (todo in todoList) {
-            todo.editing = todo == editTodo
-        }
-
-        refresh()
-    }
-
-    override fun refresh() {
-        super.refresh()
-
-        val inputBox = document.getElementById("todo_input")
-
-        if (inputBox is HTMLInputElement) {
-            inputBox.focus()
-        }
-    }
-
-    override fun render(consumer: TagConsumer<HTMLElement>) = consumer.section(classes = "todoapp") {
-        header(classes = "header") {
-            h1 { + "todos" }
-            input(classes = "new-todo") {
-                id = "todo_input"
-                placeholder = "What needs to be done?"
-                autoFocus = true
-                onKeyPressFunction = { e ->
+          if (selected == Selection.ALL ||
+              (todo.completed && selected == Selection.COMPLETED) ||
+              (!todo.completed && selected == Selection.ACTIVE)) {
+            li {
+              if (todo.editing) {
+                classes += "editing"
+                input(classes = "edit") {
+                  value = todo.title
+                  onKeyPressFunction = { e ->
                     if (e is KeyboardEvent && e.keyCode == 13) {
-                        addTodo(e)
-
-                        val target = e.target
-
-                        if (target is HTMLInputElement) {
-                            target.value = ""
-                            target.defaultValue = ""
-                        }
+                      editTodo(e, todo)
                     }
+                  }
                 }
-            }
-        }
-
-        section(classes = "main") {
-            input(classes = "toggle-all") {
-                type = InputType.checkBox
-            }
-            label {
-                for_ = "toggle-all"
-                + "Mark all as complete"
-            }
-            ul(classes = "todo-list") {
-                for (todo in todoList) {
-                    if (selected == Selection.ALL ||
-                        (todo.completed && selected == Selection.COMPLETED) ||
-                        (!todo.completed && selected == Selection.ACTIVE)) {
-                        li {
-                            if (todo.editing) {
-                                classes += "editing"
-                                input(classes = "edit") {
-                                    value = todo.title
-                                    onKeyPressFunction = { e ->
-                                        if (e is KeyboardEvent && e.keyCode == 13) {
-                                            editTodo(e, todo)
-                                        }
-                                    }
-                                }
-                            } else {
-                                if (todo.completed) {
-                                    classes += "completed"
-                                }
-                                attributes["data-id"] = todo.dataId
-                                div(classes = "view") {
-                                    input(classes = "toggle") {
-                                        type = InputType.checkBox
-                                        checked = todo.completed
-                                        onClickFunction = {
-                                            todoClicked(todo)
-                                        }
-                                    }
-                                    label(classes = "todo-content") {
-                                        +todo.title
-
-                                        onDoubleClickFunction = {
-                                            setEditing(todo)
-                                        }
-                                    }
-                                    button(classes = "destroy") {
-                                        onClickFunction = {
-                                            destroyTodo(todo)
-                                        }
-                                    }
-                                }
-                            }
-                        }
+              } else {
+                if (todo.completed) {
+                  classes += "completed"
+                }
+                attributes["data-id"] = todo.dataId
+                div(classes = "view") {
+                  input(classes = "toggle") {
+                    type = InputType.checkBox
+                    checked = todo.completed
+                    onClickFunction = {
+                      todoClicked(todo)
                     }
-                }
-            }
-        }
+                  }
+                  label(classes = "todo-content") {
+                    +todo.title
 
-        footer(classes = "footer") {
-            span(classes = "todo-count") {
-                strong { + "${getItemsLeft()}" }
-                + " item left"
-            }
-            ul(classes = "filters") {
-                for (selection in Selection.values())
-                li {
-                    a {
-                        if (selection == selected) { classes += "selected" }
-                        href = "#"
-                        + selection.title
-                        onClickFunction = {
-                            selectSelection(selection)
-                        }
+                    onDoubleClickFunction = {
+                      setEditing(todo)
                     }
+                  }
+                  button(classes = "destroy") {
+                    onClickFunction = {
+                      destroyTodo(todo)
+                    }
+                  }
                 }
+              }
             }
-            button(classes = "clear-completed") {
-                + "Clear completed"
-                onClickFunction = {
-                    clearCompleted()
-                }
-            }
+          }
         }
+      }
     }
+
+    footer(classes = "footer") {
+      span(classes = "todo-count") {
+        strong { +"${getItemsLeft()}" }
+        +" item left"
+      }
+      ul(classes = "filters") {
+        for (selection in Selection.values())
+          li {
+            a {
+              if (selection == selected) {
+                classes += "selected"
+              }
+              href = "#"
+              +selection.title
+              onClickFunction = {
+                selectSelection(selection)
+              }
+            }
+          }
+      }
+      button(classes = "clear-completed") {
+        +"Clear completed"
+        onClickFunction = {
+          clearCompleted()
+        }
+      }
+    }
+  }
 
 }
 
 fun main(args: Array<String>) {
-    Komponent.create(document.body!!, TodoApp(), true)
+  Komponent.create(document.body!!, TodoApp(), true)
 
-    val el1 = document.create.div {
-        div {
-            div {
-                id = "id1"
-                span {
-                    +"Test"
-                }
-            }
+  val el1 = document.create.div {
+    div {
+      div {
+        id = "id1"
+        span {
+          +"Test"
         }
+      }
     }
+  }
 
-    val el2 = document.create.div {
-        div {
-            id = "id1"
-            span {
-                +"Test"
-            }
-            input {
-                name = "bla"
-            }
-        }
+  val el2 = document.create.div {
+    div {
+      id = "id1"
+      span {
+        +"Test"
+      }
+      input {
+        name = "bla"
+      }
     }
+  }
 
-    // println("equals ${DomDiffer.match(el1, el2)}")
+  // println("equals ${DomDiffer.match(el1, el2)}")
 
-    console.log("OLD", el1)
-    console.log("NEW", el2)
+  console.log("OLD", el1)
+  console.log("NEW", el2)
 
-    DomDiffer.replaceDiff(el2, el1)
+  DomDiffer.replaceDiff(el2, el1)
 
-    console.log("OLD", el1)
-    console.log("NEW", el2)
+  console.log("OLD", el1)
+  console.log("NEW", el2)
 }
 

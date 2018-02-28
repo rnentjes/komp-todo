@@ -1,8 +1,5 @@
-group 'nl.astraeus'
-version '0.0.1-SNAPSHOT'
-
 buildscript {
-    ext.kotlin_version = '1.1.4-2'
+    ext.kotlin_version = '1.2.21'
 
     repositories {
         maven {
@@ -15,18 +12,26 @@ buildscript {
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.eriwen:gradle-js-plugin:1.12.1"
     }
 
 }
 
-allprojects {
-    ext {
-        kotlin_version = '1.1.4-2'
-    }
+plugins {
+    id "com.eriwen.gradle.js" version "2.14.1"
 }
 
 apply plugin: 'kotlin2js'
 apply plugin: 'kotlin-dce-js'
+
+group 'nl.astraeus'
+version '0.0.1-SNAPSHOT'
+
+allprojects {
+    ext {
+        kotlin_version = '1.2.21'
+    }
+}
 
 repositories {
     maven {
@@ -37,7 +42,7 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
-    compile "nl.astraeus:komp:0.0.6-SNAPSHOT"
+    compile "nl.astraeus:komp:0.0.8-SNAPSHOT"
 }
 
 compileKotlin2Js {
@@ -45,7 +50,35 @@ compileKotlin2Js {
 
     kotlinOptions.sourceMap = true
     kotlinOptions.sourceMapEmbedSources = "always"
-    kotlinOptions.outputFile = "${projectDir}/web/js/kotlin/komp-todo.js"
     kotlinOptions.suppressWarnings = true
     kotlinOptions.verbose = true
+}
+
+runDceKotlinJs.doLast {
+    copy {
+        from("build/kotlin-js-min/main")
+
+        into("web/js/generated")
+    }
+}
+
+// Create new CombineJsTasks if you have multiple sets of JS files
+task combineKotlinJs(type: com.eriwen.gradle.js.tasks.CombineJsTask) {
+    dependsOn runDceKotlinJs
+    source = [
+            "${projectDir}/web/js/generated/kotlin.js",
+            "${projectDir}/web/js/generated/min/kotlinx-html-js.js",
+            "${projectDir}/web/js/generated/min/komp.js",
+            "${projectDir}/web/js/generated/min/komp-todo.js"
+    ]
+    dest = file("${projectDir}/web/js/generated/todo.all.js")
+}
+
+minifyJs {
+    source = combineKotlinJs
+    dest = file("${projectDir}/web/js/generated/todo.all.min.js")
+    closure {
+        warningLevel = 'QUIET'
+        compilerOptions.languageIn = "ECMASCRIPT5"
+    }
 }
