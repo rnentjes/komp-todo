@@ -1,5 +1,7 @@
+import com.eriwen.gradle.js.tasks.CombineJsTask
+
 buildscript {
-    ext.kotlin_version = '1.2.21'
+    ext.kotlin_version = '1.2.51'
 
     repositories {
         maven {
@@ -29,7 +31,7 @@ version '0.0.1-SNAPSHOT'
 
 allprojects {
     ext {
-        kotlin_version = '1.2.21'
+        kotlin_version = '1.2.51'
     }
 }
 
@@ -42,7 +44,7 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
-    compile "nl.astraeus:komp:0.0.8-SNAPSHOT"
+    compile "nl.astraeus:komp:0.1.1-SNAPSHOT"
 }
 
 compileKotlin2Js {
@@ -63,7 +65,7 @@ runDceKotlinJs.doLast {
 }
 
 // Create new CombineJsTasks if you have multiple sets of JS files
-task combineKotlinJs(type: com.eriwen.gradle.js.tasks.CombineJsTask) {
+task combineKotlinJs(type: CombineJsTask) {
     dependsOn runDceKotlinJs
     source = [
             "${projectDir}/web/js/generated/kotlin.js",
