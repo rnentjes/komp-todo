@@ -1,6 +1,8 @@
 package nl.astraeus.komp.todo
 
+import kotlinx.html.HtmlBlockTag
 import kotlinx.html.InputType
+import kotlinx.html.TagConsumer
 import kotlinx.html.a
 import kotlinx.html.button
 import kotlinx.html.classes
@@ -19,10 +21,10 @@ import kotlinx.html.section
 import kotlinx.html.span
 import kotlinx.html.strong
 import kotlinx.html.ul
-import nl.astraeus.komp.KompConsumer
+import kotlinx.html.video
 import nl.astraeus.komp.Komponent
-import nl.astraeus.komp.UpdateStrategy
 import nl.astraeus.komp.include
+import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.events.Event
 import org.w3c.dom.events.KeyboardEvent
@@ -46,17 +48,23 @@ enum class Selection(val title: String) {
   COMPLETED("Completed")
 }
 
+fun HtmlBlockTag.todo(app: TodoApp, todo: Todo) {
+  this.include(TodoKomponent(app, todo))
+}
+
 class TodoKomponent(
     val app: TodoApp,
     val todo: Todo
-): Komponent() {
-  override fun render(consumer: KompConsumer) = consumer.li {
+) : Komponent() {
+
+  override fun render(consumer: TagConsumer<HTMLElement>) = consumer.li {
     if (todo.editing) {
       classes += "editing"
       input(classes = "edit") {
         value = todo.title
         onKeyPressFunction = { e ->
-          if (e is KeyboardEvent && e.keyCode == 13) {
+          val target = e.target
+          if (target is HTMLInputElement && e is KeyboardEvent && e.keyCode == 13 && target.value.isNotBlank()) {
             app.editTodo(e, todo)
           }
         }
@@ -174,7 +182,7 @@ class TodoApp : Komponent() {
     }
   }
 
-  override fun render(consumer: KompConsumer) = consumer.section(classes = "todoapp") {
+  override fun render(consumer: TagConsumer<HTMLElement>) = consumer.section(classes = "todoapp") {
     header(classes = "header") {
       h1 { +"todos" }
       input(classes = "new-todo") {
@@ -182,15 +190,12 @@ class TodoApp : Komponent() {
         placeholder = "What needs to be done?"
         autoFocus = true
         onKeyPressFunction = { e ->
-          if (e is KeyboardEvent && e.keyCode == 13) {
+          val target = e.target
+          if (target is HTMLInputElement && e is KeyboardEvent && e.keyCode == 13 && target.value.isNotBlank()) {
             addTodo(e)
 
-            val target = e.target
-
-            if (target is HTMLInputElement) {
-              target.value = ""
-              target.defaultValue = ""
-            }
+            target.value = ""
+            target.defaultValue = ""
           }
         }
       }
@@ -201,7 +206,7 @@ class TodoApp : Komponent() {
         type = InputType.checkBox
       }
       label {
-        for_ = "toggle-all"
+        htmlFor = "toggle-all"
         +"Mark all as complete"
       }
       ul(classes = "todo-list") {
@@ -209,7 +214,7 @@ class TodoApp : Komponent() {
           if (selected == Selection.ALL ||
               (todo.completed && selected == Selection.COMPLETED) ||
               (!todo.completed && selected == Selection.ACTIVE)) {
-            include(TodoKomponent(this@TodoApp, todo))
+            todo(this@TodoApp, todo)
           }
         }
       }
@@ -247,13 +252,6 @@ class TodoApp : Komponent() {
 
 }
 
-fun main(args: Array<String>) {
-/*
-  Komponent.logReplaceEvent = true
-  Komponent.logEquals = true
-  Komponent.logRenderEvent = true
-*/
-
-  Komponent.updateStrategy = UpdateStrategy.REPLACE
+fun main() {
   Komponent.create(document.body!!, TodoApp(), true)
 }

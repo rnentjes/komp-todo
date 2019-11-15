@@ -1,7 +1,5 @@
-import com.eriwen.gradle.js.tasks.CombineJsTask
-
 buildscript {
-    ext.kotlin_version = '1.2.51'
+    ext.kotlin_version = '1.3.50'
 
     repositories {
         maven {
@@ -14,16 +12,10 @@ buildscript {
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "com.eriwen:gradle-js-plugin:1.12.1"
     }
-
 }
 
-plugins {
-    id "com.eriwen.gradle.js" version "2.14.1"
-}
-
-apply plugin: 'kotlin2js'
+apply plugin: 'kotlin-platform-js'
 apply plugin: 'kotlin-dce-js'
 
 group 'nl.astraeus'
@@ -31,7 +23,7 @@ version '0.0.1-SNAPSHOT'
 
 allprojects {
     ext {
-        kotlin_version = '1.2.51'
+        kotlin_version = '1.3.50'
     }
 }
 
@@ -44,7 +36,7 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
-    compile "nl.astraeus:komp:0.1.1-SNAPSHOT"
+    compile "nl.astraeus:komp:0.1.7"
 }
 
 compileKotlin2Js {
@@ -61,26 +53,5 @@ runDceKotlinJs.doLast {
         from("build/kotlin-js-min/main")
 
         into("web/js/generated")
-    }
-}
-
-// Create new CombineJsTasks if you have multiple sets of JS files
-task combineKotlinJs(type: CombineJsTask) {
-    dependsOn runDceKotlinJs
-    source = [
-            "${projectDir}/web/js/generated/kotlin.js",
-            "${projectDir}/web/js/generated/min/kotlinx-html-js.js",
-            "${projectDir}/web/js/generated/min/komp.js",
-            "${projectDir}/web/js/generated/min/komp-todo.js"
-    ]
-    dest = file("${projectDir}/web/js/generated/todo.all.js")
-}
-
-minifyJs {
-    source = combineKotlinJs
-    dest = file("${projectDir}/web/js/generated/todo.all.min.js")
-    closure {
-        warningLevel = 'QUIET'
-        compilerOptions.languageIn = "ECMASCRIPT5"
     }
 }
