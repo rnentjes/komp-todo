@@ -21,7 +21,6 @@ import kotlinx.html.section
 import kotlinx.html.span
 import kotlinx.html.strong
 import kotlinx.html.ul
-import kotlinx.html.video
 import nl.astraeus.komp.Komponent
 import nl.astraeus.komp.include
 import org.w3c.dom.HTMLElement
@@ -32,7 +31,7 @@ import kotlin.browser.document
 import kotlin.js.Date
 
 /**
- * https://github.com/tastejs/todomvc/
+ * see: https://github.com/tastejs/todomvc/
  */
 
 class Todo(
