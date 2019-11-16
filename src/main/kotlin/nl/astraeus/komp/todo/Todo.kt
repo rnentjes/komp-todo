@@ -2,7 +2,6 @@ package nl.astraeus.komp.todo
 
 import kotlinx.html.HtmlBlockTag
 import kotlinx.html.InputType
-import kotlinx.html.TagConsumer
 import kotlinx.html.a
 import kotlinx.html.button
 import kotlinx.html.classes
@@ -21,9 +20,9 @@ import kotlinx.html.section
 import kotlinx.html.span
 import kotlinx.html.strong
 import kotlinx.html.ul
+import nl.astraeus.komp.HtmlBuilder
 import nl.astraeus.komp.Komponent
 import nl.astraeus.komp.include
-import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.events.Event
 import org.w3c.dom.events.KeyboardEvent
@@ -56,7 +55,7 @@ class TodoKomponent(
     val todo: Todo
 ) : Komponent() {
 
-  override fun render(consumer: TagConsumer<HTMLElement>) = consumer.li {
+  override fun render(consumer: HtmlBuilder) = consumer.li {
     if (todo.editing) {
       classes += "editing"
       input(classes = "edit") {
@@ -181,7 +180,7 @@ class TodoApp : Komponent() {
     }
   }
 
-  override fun render(consumer: TagConsumer<HTMLElement>) = consumer.section(classes = "todoapp") {
+  override fun render(consumer: HtmlBuilder) = consumer.section(classes = "todoapp") {
     header(classes = "header") {
       h1 { +"todos" }
       input(classes = "new-todo") {

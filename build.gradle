@@ -39,7 +39,7 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
-    compile "nl.astraeus:komp:0.1.7"
+    compile "nl.astraeus:komp:0.1.9"
 }
 
 compileKotlin2Js {
