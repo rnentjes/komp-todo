@@ -7,7 +7,6 @@ import kotlinx.html.js.onDoubleClickFunction
 import kotlinx.html.js.onKeyPressFunction
 import nl.astraeus.komp.HtmlBuilder
 import nl.astraeus.komp.Komponent
-import nl.astraeus.komp.include
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.events.Event
 import org.w3c.dom.events.KeyboardEvent
@@ -38,7 +37,7 @@ class TodoKomponent(
   override fun HtmlBuilder.render() {
     li {
       if (todo.editing) {
-        classes += "editing"
+        classes = classes + "editing"
         input(classes = "edit") {
           value = todo.title
           onKeyPressFunction = { e ->
@@ -50,15 +49,15 @@ class TodoKomponent(
         }
       } else {
         if (todo.completed) {
-          classes += "completed"
+          classes = classes + "completed"
         }
-        attributes["data-id"] = todo.dataId
         div(classes = "view") {
           input(classes = "toggle") {
             type = InputType.checkBox
             checked = todo.completed
             onClickFunction = {
               app.todoClicked(todo)
+              it.preventDefault()
             }
           }
           label(classes = "todo-content") {
@@ -162,7 +161,14 @@ class TodoApp : Komponent() {
           autoFocus = true
           onKeyPressFunction = { e ->
             val target = e.target
-            if (target is HTMLInputElement && e is KeyboardEvent && e.keyCode == 13 && target.value.isNotBlank()) {
+            if (target is HTMLInputElement &&
+              e is KeyboardEvent &&
+              e.keyCode == 13 &&
+              target.value.isNotBlank()
+            ) {
+              e.preventDefault()
+              e.stopPropagation()
+
               addTodo(e)
 
               target.value = ""
@@ -201,7 +207,7 @@ class TodoApp : Komponent() {
             li {
               a {
                 if (selection == selected) {
-                  classes += "selected"
+                  classes = classes + "selected"
                 }
                 href = "#"
                 +selection.title
@@ -225,5 +231,10 @@ class TodoApp : Komponent() {
 }
 
 fun main() {
-  Komponent.create(document.body!!, TodoApp(), true)
+  Komponent.logReplaceEvent = false
+  Komponent.logRenderEvent = false
+
+  println("Create TodoApp()")
+
+  Komponent.create(document.body!!, TodoApp())
 }
