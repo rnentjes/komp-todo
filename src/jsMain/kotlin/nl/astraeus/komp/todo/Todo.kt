@@ -231,10 +231,5 @@ class TodoApp : Komponent() {
 }
 
 fun main() {
-  Komponent.logReplaceEvent = false
-  Komponent.logRenderEvent = false
-
-  println("Create TodoApp()")
-
   Komponent.create(document.body!!, TodoApp())
 }
