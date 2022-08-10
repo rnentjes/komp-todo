@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackOutput.Target.VAR
-
 plugins {
     kotlin("multiplatform") version "1.6.10"
     `maven-publish`
@@ -9,6 +7,7 @@ group = "nl.astraeus"
 version = "1.0.0"
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
@@ -34,7 +33,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("nl.astraeus:kotlin-komponent:1.0.0")
+                implementation("nl.astraeus:kotlin-komponent:1.0.7-SNAPSHOT")
             }
         }
         val jsMain by getting
