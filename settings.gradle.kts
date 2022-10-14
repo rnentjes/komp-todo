@@ -7,5 +7,3 @@ pluginManagement {
 }
 
 rootProject.name = "komp-todo"
-
-enableFeaturePreview("GRADLE_METADATA")
