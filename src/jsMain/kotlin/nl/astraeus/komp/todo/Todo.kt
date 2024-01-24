@@ -16,7 +16,7 @@ import kotlin.js.Date
  * see: https://github.com/tastejs/todomvc/
  */
 
-class Todo(
+data class Todo(
     val dataId: String,
     var title: String,
     var completed: Boolean = false,
@@ -89,7 +89,7 @@ class TodoApp : Komponent() {
     if (target is HTMLInputElement) {
       todoList.add(Todo("${Date().getTime()}", target.value))
 
-      requestUpdate()
+      this@TodoApp.requestUpdate()
     }
   }
 
@@ -117,7 +117,7 @@ class TodoApp : Komponent() {
     requestUpdate()
   }
 
-  fun clearCompleted() {
+  fun clearCompleted(e: Event) {
     for (todo in ArrayList(todoList)) {
       if (todo.completed) {
         todoList.remove(todo)
@@ -133,15 +133,7 @@ class TodoApp : Komponent() {
     requestUpdate()
   }
 
-  fun getItemsLeft(): Int {
-    var result = 0
-    for (todo in todoList) {
-      if (!todo.completed) {
-        result++
-      }
-    }
-    return result
-  }
+  private fun getItemsLeft(): Int = todoList.count { todo -> !todo.completed }
 
   fun setEditing(editTodo: Todo) {
     for (todo in todoList) {
@@ -199,8 +191,16 @@ class TodoApp : Komponent() {
 
       footer(classes = "footer") {
         span(classes = "todo-count") {
-          strong { +"${getItemsLeft()}" }
-          +" item left"
+          when(getItemsLeft()) {
+            0 -> {
+              + "No items"
+            }
+            1 -> {
+              + "1 item left"
+            }
+            else ->
+              + "${getItemsLeft()} items left"
+          }
         }
         ul(classes = "filters") {
           for (selection in Selection.values()) {
@@ -220,9 +220,7 @@ class TodoApp : Komponent() {
         }
         button(classes = "clear-completed") {
           +"Clear completed"
-          onClickFunction = {
-            clearCompleted()
-          }
+          onClickFunction = ::clearCompleted
         }
       }
     }

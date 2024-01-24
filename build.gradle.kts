@@ -1,10 +1,15 @@
+@file:OptIn(ExperimentalDistributionDsl::class)
+
+import org.gradle.internal.impldep.org.bouncycastle.asn1.crmf.SinglePubInfo.web
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalDistributionDsl
+
 plugins {
-    kotlin("multiplatform") version "1.7.20"
+    kotlin("multiplatform") version "1.9.22"
     `maven-publish`
 }
 
 group = "nl.astraeus"
-version = "1.0.0"
+version = "1.1.0"
 
 repositories {
     mavenLocal()
@@ -25,17 +30,17 @@ kotlin {
                 }
             }
             distribution {
-                directory = File("$projectDir/web/")
+                outputDirectory.set(File("$projectDir/web/"))
             }
         }
     }
 
     sourceSets {
-        val commonMain by getting {
+        val commonMain by getting
+        val jsMain by getting {
             dependencies {
-                implementation("nl.astraeus:kotlin-komponent:1.0.7")
+                implementation("nl.astraeus:kotlin-komponent:1.2.1")
             }
         }
-        val jsMain by getting
     }
 }
